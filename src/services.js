@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const { sessionStorage, FormData, localStorage } = window
-
 const config = {
   baseURL: '',
   withCredentials: false,
@@ -23,48 +21,10 @@ const config = {
 }
 
 const apiInstance = axios.create(config)
-apiInstance.defaults.headers.common['Authorization'] = sessionStorage.accessToken
 
-function getFormData (fb_data) {
-  const formData = new FormData()
-  for (const key in fb_data) {
-    formData.append(key, fb_data[key])
-  }
-  return formData
-}
 
-function post (apiURL, payload) {
-  if (localStorage.accessToken) {
-    apiInstance.defaults.headers.common['Authorization'] = localStorage.accessToken
-  }
-
-  const formData = getFormData(payload)
-  return (
-    apiInstance.post(apiURL, formData).then(response => {
-      return handleResponse(response)
-    }).catch(error => {
-      return handleError(error)
-    })
-  )
-}
-
-function postObject (apiURL, payload) {
-  if (localStorage.accessToken) {
-    apiInstance.defaults.headers.common['Authorization'] = localStorage.accessToken
-  }
-  return (
-    apiInstance.post(apiURL, payload).then(response => {
-      return handleResponse(response)
-    }).catch(error => {
-      return handleError(error)
-    })
-  )
-}
 
 function get (apiURL, options = {}) {
-  if (localStorage.accessToken) {
-    apiInstance.defaults.headers.common['Authorization'] = localStorage.accessToken
-  }
   return (
     apiInstance.get(apiURL, options).then(response => {
       return handleResponse(response)
@@ -105,8 +65,6 @@ function handleError (error) {
 }
 
 export default {
-  post,
-  postObject,
   get
 }
 
